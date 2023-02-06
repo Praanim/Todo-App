@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hamro_app/database/db_services.dart';
 import 'package:hamro_app/model/todo_model.dart';
+import 'package:hamro_app/screens/form_screen.dart';
+import 'package:hamro_app/screens/update_screen.dart';
 import 'package:hamro_app/shared/decoration.dart';
 
 class MyContainer extends StatefulWidget {
@@ -12,6 +14,7 @@ class MyContainer extends StatefulWidget {
 
 class _MyContainerState extends State<MyContainer> {
   DatabaseHelper _databaseHelper = DatabaseHelper();
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<ToDo>>(
@@ -19,19 +22,41 @@ class _MyContainerState extends State<MyContainer> {
       stream: DatabaseHelper().todos,
       builder: (BuildContext context, AsyncSnapshot<List<ToDo>> snapshot) {
         if (snapshot.hasError) {
-          return Text(
-            "Something went wrong",
-            style: textStyle,
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Something went wrong",
+                style: blacktextStyle,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                snapshot.error.toString(),
+                style: blacktextStyle,
+              )
+            ],
           );
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text(
-            "Loading",
-            style: textStyle,
+          return Center(
+            child: Text(
+              "Loading",
+              style: blacktextStyle,
+            ),
           );
         }
         if (snapshot.hasData) {
           List<ToDo>? todos = snapshot.data;
+          if (todos == null) {
+            Center(
+              child: Text(
+                "There is no item in Todo list",
+                style: blacktextStyle,
+              ),
+            );
+          }
           return ListView.builder(
             itemCount: todos!.length,
             itemBuilder: (context, index) {
@@ -39,11 +64,17 @@ class _MyContainerState extends State<MyContainer> {
                 padding: EdgeInsets.only(top: 8),
                 child: Card(
                   child: ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              UpdateScreen(todo: todos[index]),
+                        ));
+                      },
                       title: Text(todos[index].title!),
                       subtitle: Text(todos[index].description!),
                       trailing: GestureDetector(
                         onTap: () async {
-                          await _databaseHelper.deleteTask(todos[index].title!);
+                          await _databaseHelper.deleteTask(todos[index].id);
                         },
                         child: Container(
                             height: 30,

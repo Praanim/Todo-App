@@ -1,20 +1,39 @@
 import 'package:flutter/material.dart';
 
 import 'package:hamro_app/database/db_services.dart';
+import 'package:hamro_app/model/todo_model.dart';
 
-class FormScreen extends StatefulWidget {
-  const FormScreen({
+class UpdateScreen extends StatefulWidget {
+  final ToDo todo;
+  const UpdateScreen({
     Key? key,
+    required this.todo,
   }) : super(key: key);
 
   @override
-  State<FormScreen> createState() => _FormScreenState();
+  State<UpdateScreen> createState() => _FormScreenState();
 }
 
-class _FormScreenState extends State<FormScreen> {
-  TextEditingController _title = TextEditingController();
-  TextEditingController _description = TextEditingController();
+class _FormScreenState extends State<UpdateScreen> {
+  late TextEditingController _titlecontroller;
+  late TextEditingController _descriptioncontroller;
   DatabaseHelper _databaseHelper = DatabaseHelper();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _titlecontroller = TextEditingController(text: widget.todo.title);
+    _descriptioncontroller =
+        TextEditingController(text: widget.todo.description);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _titlecontroller.dispose();
+    _descriptioncontroller.dispose();
+  }
 
   final formKey = GlobalKey<FormState>();
   @override
@@ -30,7 +49,7 @@ class _FormScreenState extends State<FormScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Create Your Task ",
+                  "Update Your Task ",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -42,7 +61,7 @@ class _FormScreenState extends State<FormScreen> {
                 _customTextForm(
                     isStatus: true,
                     hintText: "ToDo Title",
-                    mycontroller: _title,
+                    mycontroller: _titlecontroller,
                     validating: (val) {
                       return val!.isEmpty ? "Can't be empty" : null;
                     }),
@@ -52,7 +71,7 @@ class _FormScreenState extends State<FormScreen> {
                 _customTextForm(
                     isStatus: true,
                     hintText: "Description",
-                    mycontroller: _description,
+                    mycontroller: _descriptioncontroller,
                     validating: (val) {
                       return val!.isEmpty ? "Can't be empty" : null;
                     }),
@@ -62,19 +81,16 @@ class _FormScreenState extends State<FormScreen> {
                 Center(
                   child: ElevatedButton.icon(
                       onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          _databaseHelper.createUserData(
-                              _title.text, _description.text);
-
-                          Navigator.pop(context);
-                        }
+                        _databaseHelper.updateUserData(widget.todo.id,
+                            _titlecontroller.text, _descriptioncontroller.text);
+                        Navigator.pop(context);
                       },
                       icon: Icon(
                         Icons.done,
                         color: Colors.white,
                       ),
                       label: Text(
-                        "Create",
+                        "Update",
                         style: TextStyle(color: Colors.white),
                       )),
                 )

@@ -8,24 +8,34 @@ class DatabaseHelper {
   final CollectionReference todoCollection =
       FirebaseFirestore.instance.collection('myTodos');
 
-  Future updateUserData(String title, String description) async {
+  Future createUserData(String title, String description) async {
     return await todoCollection
-        .doc(title)
-        .set({'title': title, 'description': description});
+        .add({'title': title, 'description': description}).then(
+            (value) => print("User added"));
+  }
+
+  Future updateUserData(String docid, String title, String description) async {
+    return await todoCollection
+        .doc(docid)
+        .set({'title': title, 'description': description}).then(
+            (value) => print("Updated the data in realtime"));
   }
 
   List<ToDo> _toDoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((document) {
+      var docid = document.id;
+      print(docid);
       var map = document.data() as Map;
 
       return ToDo(
+          id: docid,
           title: map['title'] ?? 'nothing',
           description: map['description'] ?? 'nothing');
     }).toList();
   }
 
-  Future<void> deleteTask(String tobeDeletedTitle) {
-    return todoCollection.doc(tobeDeletedTitle).delete();
+  Future<void> deleteTask(String docId) {
+    return todoCollection.doc(docId).delete();
   }
 
   Stream<List<ToDo>> get todos {

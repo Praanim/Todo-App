@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 const textStyle =
     TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30);
 
+const blacktextStyle =
+    TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 30);
+
 final inputDecoration = InputDecoration(
   fillColor: Colors.white,
   filled: true,
