@@ -4,13 +4,8 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project is about flutter Framework,firebase backend and provider statemanagement tool which i
+did in 2022 while i was studying in 2nd sem of bsc.csit.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project is a traditional todoapp with Crud operation.
+I will be add an feature like profile based todoapp like mutli user from this date(2/6/2023)
