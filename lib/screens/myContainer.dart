@@ -81,7 +81,7 @@ class _MyContainerState extends State<MyContainer> {
                       subtitle: Text(todos[index].description),
                       trailing: GestureDetector(
                         onTap: () async {
-                          await _databaseHelper.deleteTask(todos[index].id);
+                          await _databaseHelper.deleteTask(todos[index].docid);
                         },
                         child: Container(
                             height: 30,

@@ -32,8 +32,8 @@ class AuthRepository {
   Stream<User?> get authStateChange => _auth.authStateChanges();
 
   //get userModel stream from the database
-  Stream<UserModel> getUserData() {
-    return _users.doc(_auth.currentUser!.uid).snapshots().map((docSnapshot) {
+  Stream<UserModel> getUserData(String authUid) {
+    return _users.doc(authUid).snapshots().map((docSnapshot) {
       final data = docSnapshot.data() as Map;
       return UserModel(
           uid: data['uid'],
@@ -62,7 +62,28 @@ class AuthRepository {
 
       return right(userModel);
     } on FirebaseException catch (error) {
-      throw error.message!;
+      return left(Failure(error.toString()));
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+  FutureEither<UserModel> signIn(String email, String password) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+
+      final doc = await _users.doc(userCredential.user!.uid).get();
+      final data = doc.data() as Map;
+      final usermodel = UserModel(
+          uid: data['uid'],
+          name: data['name'],
+          email: data['email'],
+          password: data['password'],
+          imageUrl: data['imageUrl']);
+      return right(usermodel);
+    } on FirebaseAuthException catch (error) {
+      return left(Failure(error.message.toString()));
     } catch (e) {
       return left(Failure(e.toString()));
     }

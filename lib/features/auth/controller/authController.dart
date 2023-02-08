@@ -14,11 +14,9 @@ final authStateProvider = StreamProvider<User?>((ref) {
   return streamofNullableUser;
 });
 
-//userdataprovider
-
-final userDataProvider = StreamProvider<UserModel>((ref) {
-  return ref.watch(authControllerProvider).getUserdata;
-});
+final userProvider = StateProvider<UserModel?>(
+  (ref) => null,
+);
 
 //authcontroller provider
 final authControllerProvider = Provider((ref) => AuthController(
@@ -37,8 +35,18 @@ class AuthController {
   void createUser(
       String name, String email, String password, BuildContext context) async {
     final customUser = await _authRepository.createUser(name, email, password);
-    customUser.fold((failure) => showSnackBar(context, failure.message),
-        (userModel) => null);
+    customUser.fold(
+        (failure) => showSnackBar(context, failure.message),
+        (userModel) =>
+            _ref.read(userProvider.notifier).update((state) => userModel));
+  }
+  //signIn user ko lagi pani same logic rakhna parxa
+  //just like in signup
+
+  void signInUser(String email, String password, BuildContext context) async {
+    final customUser = await _authRepository.signIn(email, password);
+    customUser.fold((l) => showSnackBar(context, l.message),
+        (r) => _ref.read(userProvider.notifier).update((state) => r));
   }
 
   //aba stream vayexi tah stream provider setup garna milyo using riverpod
@@ -47,7 +55,8 @@ class AuthController {
 
   //get stream of usermodel
 
-  Stream<UserModel> get getUserdata => _authRepository.getUserData();
+  Stream<UserModel> getUserdata(String authUid) =>
+      _authRepository.getUserData(authUid);
 
   //logging Out
 

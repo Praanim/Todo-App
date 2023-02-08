@@ -9,16 +9,16 @@ class DatabaseHelper {
       FirebaseFirestore.instance.collection('myTodos');
 
   Future createUserData(String authId, String title, String description) async {
-    return await todoCollection
-        .doc(authId)
-        .set(ToDo(id: authId, description: description, title: title).toMap())
-        .then((value) => print("Notes added"));
+    return await todoCollection.add(
+      {"uid": authId, "title": title, "description": description},
+    ).then((value) => print("Notes added"));
   }
 
-  Future updateUserData(String authid, String title, String description) async {
+  Future updateUserData(
+      String docId, String title, String description, String authId) async {
     return await todoCollection
-        .doc(authid)
-        .set({'title': title, 'description': description}).then(
+        .doc(docId)
+        .set({"uid": authId, 'title': title, 'description': description}).then(
             (value) => print("Updated the data in realtime"));
   }
 
@@ -29,9 +29,10 @@ class DatabaseHelper {
       var map = document.data() as Map;
 
       return ToDo(
-          id: docid,
+          docid: docid,
           title: map['title'] ?? 'nothing',
-          description: map['description'] ?? 'nothing');
+          description: map['description'] ?? 'nothing',
+          userId: map['uid']);
     }).toList();
   }
 

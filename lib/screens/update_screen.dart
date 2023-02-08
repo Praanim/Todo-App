@@ -83,8 +83,11 @@ class _FormScreenState extends State<UpdateScreen> {
                 Center(
                   child: ElevatedButton.icon(
                       onPressed: () {
-                        _databaseHelper.updateUserData(widget.authId,
-                            _titlecontroller.text, _descriptioncontroller.text);
+                        _databaseHelper.updateUserData(
+                            widget.todo.docid,
+                            _titlecontroller.text,
+                            _descriptioncontroller.text,
+                            widget.authId);
                         Navigator.pop(context);
                       },
                       icon: Icon(
