@@ -4,9 +4,11 @@ import 'package:hamro_app/database/db_services.dart';
 import 'package:hamro_app/model/todo_model.dart';
 
 class UpdateScreen extends StatefulWidget {
+  final String authId;
   final ToDo todo;
   const UpdateScreen({
     Key? key,
+    required this.authId,
     required this.todo,
   }) : super(key: key);
 
@@ -81,7 +83,7 @@ class _FormScreenState extends State<UpdateScreen> {
                 Center(
                   child: ElevatedButton.icon(
                       onPressed: () {
-                        _databaseHelper.updateUserData(widget.todo.id,
+                        _databaseHelper.updateUserData(widget.authId,
                             _titlecontroller.text, _descriptioncontroller.text);
                         Navigator.pop(context);
                       },

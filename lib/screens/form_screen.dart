@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hamro_app/database/db_services.dart';
 
 class FormScreen extends StatefulWidget {
+  final String authId;
   const FormScreen({
     Key? key,
+    required this.authId,
   }) : super(key: key);
 
   @override
@@ -64,7 +66,7 @@ class _FormScreenState extends State<FormScreen> {
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           _databaseHelper.createUserData(
-                              _title.text, _description.text);
+                              widget.authId, _title.text, _description.text);
 
                           Navigator.pop(context);
                         }

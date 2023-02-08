@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:hamro_app/database/db_services.dart';
 import 'package:hamro_app/model/todo_model.dart';
 import 'package:hamro_app/screens/form_screen.dart';
@@ -6,7 +7,11 @@ import 'package:hamro_app/screens/update_screen.dart';
 import 'package:hamro_app/shared/decoration.dart';
 
 class MyContainer extends StatefulWidget {
-  const MyContainer({Key? key}) : super(key: key);
+  final String authId;
+  const MyContainer({
+    Key? key,
+    required this.authId,
+  }) : super(key: key);
 
   @override
   State<MyContainer> createState() => _MyContainerState();
@@ -66,12 +71,14 @@ class _MyContainerState extends State<MyContainer> {
                   child: ListTile(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              UpdateScreen(todo: todos[index]),
+                          builder: (context) => UpdateScreen(
+                            todo: todos[index],
+                            authId: widget.authId,
+                          ),
                         ));
                       },
-                      title: Text(todos[index].title!),
-                      subtitle: Text(todos[index].description!),
+                      title: Text(todos[index].title),
+                      subtitle: Text(todos[index].description),
                       trailing: GestureDetector(
                         onTap: () async {
                           await _databaseHelper.deleteTask(todos[index].id);

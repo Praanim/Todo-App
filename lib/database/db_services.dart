@@ -8,15 +8,16 @@ class DatabaseHelper {
   final CollectionReference todoCollection =
       FirebaseFirestore.instance.collection('myTodos');
 
-  Future createUserData(String title, String description) async {
+  Future createUserData(String authId, String title, String description) async {
     return await todoCollection
-        .add({'title': title, 'description': description}).then(
-            (value) => print("User added"));
+        .doc(authId)
+        .set(ToDo(id: authId, description: description, title: title).toMap())
+        .then((value) => print("Notes added"));
   }
 
-  Future updateUserData(String docid, String title, String description) async {
+  Future updateUserData(String authid, String title, String description) async {
     return await todoCollection
-        .doc(docid)
+        .doc(authid)
         .set({'title': title, 'description': description}).then(
             (value) => print("Updated the data in realtime"));
   }
