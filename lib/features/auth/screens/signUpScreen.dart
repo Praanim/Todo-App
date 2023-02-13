@@ -6,7 +6,11 @@ import 'package:hamro_app/features/auth/screens/widgets/signInButton.dart';
 import 'package:hamro_app/shared/customtextfield.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+  final Function toggleView;
+  const SignUpScreen({
+    Key? key,
+    required this.toggleView,
+  }) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _SignUpScreenState();
@@ -59,6 +63,30 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                 ),
                 CustomTextField(
                     controller: _passwordController, hintText: "Password"),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already Have an Account?",
+                      style: TextStyle(
+                        fontSize: 15,
+                      ),
+                    ),
+                    MaterialButton(
+                      onPressed: () => widget.toggleView(),
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.deepPurple),
+                      ),
+                    ),
+                  ],
+                ),
                 SizedBox(
                   height: 10,
                 ),

@@ -7,6 +7,7 @@ import 'package:hamro_app/common/loader.dart';
 import 'package:hamro_app/constants/global_variables.dart';
 import 'package:hamro_app/features/auth/controller/authController.dart';
 import 'package:hamro_app/features/auth/screens/signUpScreen.dart';
+import 'package:hamro_app/features/auth/screens/wrapper.dart';
 import 'package:hamro_app/model/user_model.dart';
 import 'package:hamro_app/screens/home.dart';
 
@@ -58,7 +59,7 @@ class _MyAppState extends ConsumerState<MyApp> {
                       },
                       future: getUserData(ref, user),
                     )
-                  : SignInScreen(),
+                  : Wrapper(),
             );
           },
           error: (error, stackTrace) => ErrorText(error: error.toString()),
