@@ -16,3 +16,8 @@ Im login_feature branch the app is multi-user with personal list of todos demons
 filtering when querying in firebase backend.Login,signup features are added with all these
 features working in realtime that means all changes can be seen in an instant.
 
+## OUTPUT
+
+
+https://user-images.githubusercontent.com/109682352/223770860-d253bd09-780f-4dea-b5f4-c5eefaae9c0e.mp4
+
