@@ -22,6 +22,7 @@ class MyContainer extends ConsumerStatefulWidget {
 }
 
 class _MyContainerState extends ConsumerState<MyContainer> {
+  final DatabaseHelper _databaseHelper = DatabaseHelper();
   @override
   Widget build(BuildContext context) {
     return ref.watch(customTodosProvider(widget.authId)).when(
@@ -45,7 +46,8 @@ class _MyContainerState extends ConsumerState<MyContainer> {
                         subtitle: Text(todos[index].description),
                         trailing: GestureDetector(
                           onTap: () async {
-                            // await _databaseHelper.deleteTask(todos[index].docid);
+                            await _databaseHelper
+                                .deleteTask(todos[index].docid);
                           },
                           child: Container(
                               height: 30,
